@@ -4,12 +4,12 @@ from schedule import repeat, every, run_pending
 import time
 
 from ingestors import DaySummaryIngestor, TradesIngestor
-from writers import DataWriter
+from writers import S3DataWriter
 
 
 if __name__ == "__main__":
     day_summary_ingestor = DaySummaryIngestor(
-        writer=DataWriter,
+        writer=S3DataWriter,
         coins=["BTC", "ETH", "LTC"],
         default_start_date=datetime.date(2022, 10, 2),
     )
