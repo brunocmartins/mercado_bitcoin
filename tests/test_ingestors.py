@@ -38,7 +38,10 @@ class TestIngestors:
 
         assert actual == expected
 
-    @patch('mercado_bitcoin.ingestors.DataIngestor._load_checkpoint', return_value=datetime.date(2022, 1, 1))
+    @patch(
+        "mercado_bitcoin.ingestors.DataIngestor._load_checkpoint",
+        return_value=datetime.date(2022, 1, 1),
+    )
     def test_get_checkpoint_file_exists(self, mock_load_checkpoint):
         data_ingestor = DataIngestor(
             writer=DataWriter,
@@ -49,8 +52,8 @@ class TestIngestors:
         expected = datetime.date(2022, 1, 1)
 
         assert actual == expected
-    
-    @patch('mercado_bitcoin.ingestors.DataIngestor._load_checkpoint', return_value=None)
+
+    @patch("mercado_bitcoin.ingestors.DataIngestor._load_checkpoint", return_value=None)
     def test_get_checkpoint_file_doesnt_exist(self, mock_load_checkpoint):
         data_ingestor = DataIngestor(
             writer=DataWriter,
@@ -62,7 +65,9 @@ class TestIngestors:
 
         assert actual == expected
 
-    @patch("mercado_bitcoin.ingestors.DataIngestor._write_checkpoint", return_value=None)
+    @patch(
+        "mercado_bitcoin.ingestors.DataIngestor._write_checkpoint", return_value=None
+    )
     def test_update_checkpoint_checkpoint_updated(self, mock, data_ingestor_fixture):
         data_ingestor = data_ingestor_fixture
         data_ingestor._update_checkpoint(value=datetime.date(2022, 1, 1))
@@ -71,7 +76,9 @@ class TestIngestors:
 
         assert actual == expected
 
-    @patch("mercado_bitcoin.ingestors.DataIngestor._write_checkpoint", return_value=None)
+    @patch(
+        "mercado_bitcoin.ingestors.DataIngestor._write_checkpoint", return_value=None
+    )
     def test_update_checkpoint_checkpoint_written(self, mock, data_ingestor_fixture):
         data_ingestor = data_ingestor_fixture
         data_ingestor._update_checkpoint(value=datetime.date(2022, 1, 1))

@@ -89,11 +89,10 @@ class TestTradesApi:
 
 
 @pytest.fixture()
-@patch('mercado_bitcoin.apis.MercadoBitcoinApi.__abstractmethods__', set())
+@patch("mercado_bitcoin.apis.MercadoBitcoinApi.__abstractmethods__", set())
 def mercado_bitcoin_api_fixture():
-    return MercadoBitcoinApi(
-            coin='TEST'
-        )
+    return MercadoBitcoinApi(coin="TEST")
+
 
 def mocked_requests_get(*args, **kwargs):
     class MockResponse(requests.Response):
@@ -101,7 +100,7 @@ def mocked_requests_get(*args, **kwargs):
             super().__init__()
             self.status_code = status_code
             self.json_data = json_data
-        
+
         def raise_for_status(self):
             if self.status_code != 200:
                 raise Exception
@@ -109,31 +108,45 @@ def mocked_requests_get(*args, **kwargs):
         def json(self):
             return self.json_data
 
-    if args[0] == 'valid_endpoint':
-        return MockResponse(json_data={'foo': 'bar'}, status_code=200)
+    if args[0] == "valid_endpoint":
+        return MockResponse(json_data={"foo": "bar"}, status_code=200)
     else:
         return MockResponse(json_data=None, status_code=404)
 
 
 class TestMercadoBitcoinApi:
-
-    @patch('requests.get')
-    @patch('mercado_bitcoin.apis.MercadoBitcoinApi._get_endpoint', return_value='valid_endpoint')
-    def test_get_data_requests_is_called(self, mock_get_endpoint, mock_requests, mercado_bitcoin_api_fixture):
+    @patch("requests.get")
+    @patch(
+        "mercado_bitcoin.apis.MercadoBitcoinApi._get_endpoint",
+        return_value="valid_endpoint",
+    )
+    def test_get_data_requests_is_called(
+        self, mock_get_endpoint, mock_requests, mercado_bitcoin_api_fixture
+    ):
         mercado_bitcoin_api_fixture.get_data()
-        mock_requests.assert_called_once_with('valid_endpoint')
+        mock_requests.assert_called_once_with("valid_endpoint")
 
-    @patch('requests.get', side_effect=mocked_requests_get)
-    @patch('mercado_bitcoin.apis.MercadoBitcoinApi._get_endpoint', return_value='valid_endpoint')
-    def test_get_data_with_valid_endpoint(self, mock_get_endpoint, mock_requests, mercado_bitcoin_api_fixture):
+    @patch("requests.get", side_effect=mocked_requests_get)
+    @patch(
+        "mercado_bitcoin.apis.MercadoBitcoinApi._get_endpoint",
+        return_value="valid_endpoint",
+    )
+    def test_get_data_with_valid_endpoint(
+        self, mock_get_endpoint, mock_requests, mercado_bitcoin_api_fixture
+    ):
         actual = mercado_bitcoin_api_fixture.get_data()
-        expected = {'foo': 'bar'}
+        expected = {"foo": "bar"}
 
         assert actual == expected
 
-    @patch('requests.get', side_effect=mocked_requests_get)
-    @patch('mercado_bitcoin.apis.MercadoBitcoinApi._get_endpoint', return_value='invalid_endpoint')
-    def test_get_data_with_valid_endpoint(self, mock_get_endpoint, mock_requests, mercado_bitcoin_api_fixture):
+    @patch("requests.get", side_effect=mocked_requests_get)
+    @patch(
+        "mercado_bitcoin.apis.MercadoBitcoinApi._get_endpoint",
+        return_value="invalid_endpoint",
+    )
+    def test_get_data_with_valid_endpoint(
+        self, mock_get_endpoint, mock_requests, mercado_bitcoin_api_fixture
+    ):
         with pytest.raises(Exception):
             mercado_bitcoin_api_fixture.get_data()
 
@@ -142,13 +155,14 @@ class TestMercadoBitcoinApi:
             pass
 
         with pytest.raises(TypeError):
-            MercadoBitcoinApiWithoutGetEndpoint(coin='TEST')
+            MercadoBitcoinApiWithoutGetEndpoint(coin="TEST")
 
     def test_can_instantiate_class_with_get_endpoint(self):
         class MercadoBitcoinApiWithGetEndpoint(MercadoBitcoinApi):
             def _get_endpoint(self):
                 return 1
-        actual = MercadoBitcoinApiWithGetEndpoint(coin='TEST')._get_endpoint()
+
+        actual = MercadoBitcoinApiWithGetEndpoint(coin="TEST")._get_endpoint()
         expected = 1
 
         assert actual == expected

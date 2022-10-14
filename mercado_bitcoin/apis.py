@@ -57,7 +57,7 @@ class TradesApi(MercadoBitcoinApi):
             endpoint = f"{self.base_endpoint}/{self.coin}/{self.type_}/{unix_date_from}"
         elif date_from and date_to:
             if date_from > date_to:
-                raise RuntimeError('date_from cannot be greater than date_to')
+                raise RuntimeError("date_from cannot be greater than date_to")
             unix_date_from = self._get_unix_epoch(date_from)
             unix_date_to = self._get_unix_epoch(date_to)
             endpoint = f"{self.base_endpoint}/{self.coin}/{self.type_}/{unix_date_from}/{unix_date_to}"
