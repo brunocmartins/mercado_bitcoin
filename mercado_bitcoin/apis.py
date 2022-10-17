@@ -47,7 +47,7 @@ class TradesApi(MercadoBitcoinApi):
     type_ = "trades"
 
     def _get_unix_epoch(self, date: datetime) -> int:
-        return int(date.timestamp())
+        return int(date.replace(tzinfo=datetime.timezone.utc).timestamp())
 
     def _get_endpoint(
         self, date_from: datetime.datetime = None, date_to: datetime.datetime = None

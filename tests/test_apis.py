@@ -43,13 +43,13 @@ class TestTradesApi:
                 "TEST",
                 datetime.datetime(2022, 1, 1),
                 datetime.datetime(2022, 1, 2),
-                "https://www.mercadobitcoin.net/api/TEST/trades/1641006000/1641092400",
+                "https://www.mercadobitcoin.net/api/TEST/trades/1640995200/1641081600",
             ),
             (
                 "TEST",
                 datetime.datetime(2022, 1, 1),
                 None,
-                "https://www.mercadobitcoin.net/api/TEST/trades/1641006000",
+                "https://www.mercadobitcoin.net/api/TEST/trades/1640995200",
             ),
             (
                 "TEST",
@@ -76,9 +76,9 @@ class TestTradesApi:
     @pytest.mark.parametrize(
         "date, expected",
         [
-            (datetime.datetime(2022, 1, 1), 1641006000),
-            (datetime.datetime(2022, 1, 2), 1641092400),
-            (datetime.datetime(2022, 1, 2, 0, 0, 5), 1641092405),
+            (datetime.datetime(2022, 1, 1), 1640995200),
+            (datetime.datetime(2022, 1, 2), 1641081600),
+            (datetime.datetime(2022, 1, 2, 0, 0, 5), 1641081605),
         ],
     )
     def test_get_unix_epoch(self, date, expected):
